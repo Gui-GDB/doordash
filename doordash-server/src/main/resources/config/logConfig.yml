@@ -1,0 +1,9 @@
+# 设置日志
+logging:
+  level:
+    com:
+      gdb:
+        doordash:
+          mapper: debug
+          service: info
+          controller: info
