@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--声明项目描述符遵循哪一个POM模型版本-->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--设置SpringBoot的父工程-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version>
+        <relativePath/>
+    </parent>
+
+    <!--设置模块信息-->
+    <groupId>com.gdb.doordash</groupId>
+    <artifactId>doordash</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- packaging 标签：打包方式 -->
+    <!-- 取值 jar：生成 jar 包，说明这是一个 Java 工程 -->
+    <!-- 取值 war：生成 war 包，说明这是一个 Web 工程 -->
+    <!-- 取值 pom：说明这个工程是用来管理其它工程的工程 -->
+    <packaging>pom</packaging>
+
+    <!--聚合的配置，子工程 -->
+    <modules>
+        <module>doordash-common</module>
+        <module>doordash-pojo</module>
+        <module>doordash-server</module>
+    </modules>
+
+
+    <!--配置整个项目的版本信息-->
+    <properties>
+        <!--配置springboot整合mybatis的版本-->
+        <mybatis>3.0.3</mybatis>
+        <!--配置生成API文档的依赖版本-->
+        <knife4j>4.4.0</knife4j>
+        <!--配置分页插件pageHelper的版本-->
+        <pagehelper>2.1.0</pagehelper>
+        <!--德鲁伊数据库连接池-->
+        <druid>1.2.21</druid>
+
+
+        <fastjson>1.2.76</fastjson>
+        <commons.lang>2.6</commons.lang>
+        <aliyun.sdk.oss>3.10.2</aliyun.sdk.oss>
+        <jjwt>0.9.1</jjwt>
+        <jaxb-api>2.3.1</jaxb-api>
+        <poi>3.16</poi>
+    </properties>
+
+    <!-- 在父工程中统一管理依赖信息 -->
+    <!-- 注意：即使在父工程配置了对依赖的管理，子工程需要使用具体哪一个依赖还是要明确配置 -->
+    <dependencyManagement>
+        <dependencies>
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis}</version>
+            </dependency>
+            <!--knife4j-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j}</version>
+            </dependency>
+            <!--pageHelper-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper}</version>
+            </dependency>
+            <!--druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun.sdk.oss}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api}</version>
+            </dependency>
+
+            <!-- poi -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi}</version>
+            </dependency>
+            <!--微信支付-->
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-apache-httpclient</artifactId>
+                <version>0.4.8</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
