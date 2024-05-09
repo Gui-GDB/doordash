@@ -35,7 +35,12 @@ public interface EmployeeMapper {
 
     /**
      * 根据主键动态修改属性
-     * @param employee
      */
     void update(Employee employee);
+
+    /**
+     * 根据 id 查询员工信息
+     */
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Integer id);
 }

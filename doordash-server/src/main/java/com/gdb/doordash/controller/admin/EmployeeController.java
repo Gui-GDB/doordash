@@ -97,11 +97,43 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 根据 id 启用禁用员工的账号
+     * @param status 账号状态，0表示禁用，1表示启用
+     * @param id 用户的主键 id
+     * @return 返回是否成功
+     */
     @Operation (summary = "启用禁用员工账号")
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info(status + "====> " + id);
         employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 根据id查询员工的信息
+     * @param id 员工的id
+     * @return 返回员工的所有信息
+     */
+    @Operation(
+            summary = "根据id查询员工的信息"
+    )
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable("id") Integer id) {
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeDTO 需要修改的信息
+     * @return 返回修改是否成功的信息
+     */
+    @PutMapping
+    @Operation(summary = "编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }

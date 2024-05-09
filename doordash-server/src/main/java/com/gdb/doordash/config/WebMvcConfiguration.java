@@ -1,12 +1,17 @@
 package com.gdb.doordash.config;
 
 import com.gdb.doordash.interceptor.JwtTokenAdminInterceptor;
+import com.gdb.doordash.json.JacksonObjectMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import java.util.List;
 
 /**
  * 配置类，注册web层相关组件
@@ -40,10 +45,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 扩展 SpringMVC 框架的消息转化器
-     * @param converters the list of configured converters to extend
      */
-    // todo 不知道为什么添加了消息转换器后，knife4j 没法使用
-/*    @Override
+    @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展消息转换器....");
         //创建一个消息转换器对象
@@ -51,6 +54,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //需要为消息转换器设置一个对象转换器，对像转换器可以将 Java 对象序列化为 json 数据
         converter.setObjectMapper(new JacksonObjectMapper());
         //将自己的消息转换器加入容器中，并且把优先级设置为最高
-        converters.add(0, converter);
-    }*/
+        converters.add(1, converter);
+    }
 }

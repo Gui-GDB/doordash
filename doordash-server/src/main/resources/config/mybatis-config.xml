@@ -13,10 +13,10 @@
         <setting name="lazyLoadingEnabled" value="true"/>
     </settings>
     <typeAliases>
-        <package name="com.sky.entity"/>
+        <package name="com.gdb.doordash.entity"/>
     </typeAliases>
     <mappers>
         <!--sql映射⽂件创建好之后，需要将该⽂件路径配置到这⾥-->
-        <package name="mapper"/>
+        <package name="com.gdb.doordash.mapper"/>
     </mappers>
 </configuration>

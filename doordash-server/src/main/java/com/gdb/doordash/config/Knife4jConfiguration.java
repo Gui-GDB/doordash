@@ -28,9 +28,9 @@ public class Knife4jConfiguration {
         log.info("准备生成接口文档...");
         return new OpenAPI()
                 // 接口文档标题
-                .info(new Info().title("苍穹外卖项目接口文档")
+                .info(new Info().title("doordash项目接口文档")
                         // 接口文档简介
-                        .description("苍穹外卖项目接口文档（这是基于Knife4j OpenApi3的接口文档）")
+                        .description("doordash项目接口文档（这是基于Knife4j OpenApi3的接口文档）")
                         .termsOfService("https://blog.csdn.net/weixin_65032328?type=blog")
                         // 接口文档版本
                         .version("v1.0.0")
@@ -40,7 +40,7 @@ public class Knife4jConfiguration {
                                 .url("https://blog.csdn.net/weixin_65032328?type=blog"))
                         // 开发者联系方式
                         .contact(new Contact()
-                                .name("迷人的小宝")
+                                .name("小宝")
                                 .email("dingbaogui8@gmail.com")
                                 .url("https://blog.csdn.net/weixin_65032328?type=blog")))
                 .externalDocs(new ExternalDocumentation()
