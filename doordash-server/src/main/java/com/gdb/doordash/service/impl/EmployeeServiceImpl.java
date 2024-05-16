@@ -1,29 +1,28 @@
 package com.gdb.doordash.service.impl;
 
+import com.gdb.doordash.constant.MessageConstant;
 import com.gdb.doordash.constant.PasswordConstant;
 import com.gdb.doordash.constant.StatusConstant;
-import com.gdb.doordash.context.BaseContext;
-import com.gdb.doordash.exception.AccountNotFoundException;
-import com.gdb.doordash.exception.PasswordErrorException;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.gdb.doordash.constant.MessageConstant;
 import com.gdb.doordash.dto.EmployeeDTO;
 import com.gdb.doordash.dto.EmployeeLoginDTO;
 import com.gdb.doordash.dto.EmployeePageQueryDTO;
 import com.gdb.doordash.entity.Employee;
 import com.gdb.doordash.exception.AccountLockedException;
+import com.gdb.doordash.exception.AccountNotFoundException;
+import com.gdb.doordash.exception.PasswordErrorException;
 import com.gdb.doordash.mapper.EmployeeMapper;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.service.EmployeeService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -56,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
-        if (employee.getStatus() == StatusConstant.DISABLE) {
+        if (Objects.equals(employee.getStatus(), StatusConstant.DISABLE)) {
             //账号被锁定
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
@@ -77,13 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
         //设置密码，默认密码是123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        //设置当前记录的创建时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        //设置当前记录创建人id和修改人id
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
+        //设置创建时间、修改时间、创建人、修改人，这里通过AOP自动填充了
         employeeMapper.insert(employee);
     }
 
@@ -124,8 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        //设置修改时间、修改人，这里通过AOP自动填充了
         employeeMapper.update(employee);
     }
 }

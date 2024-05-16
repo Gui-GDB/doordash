@@ -5,7 +5,6 @@ import com.gdb.doordash.context.BaseContext;
 import com.gdb.doordash.dto.CategoryDTO;
 import com.gdb.doordash.dto.CategoryPageQueryDTO;
 import com.gdb.doordash.entity.Category;
-import com.gdb.doordash.entity.Employee;
 import com.gdb.doordash.mapper.CategoryMapper;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.service.CategoryService;
@@ -51,11 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
         //分类状态默认为禁用状态0
         category.setStatus(StatusConstant.DISABLE);
 
-        //设置创建时间、修改时间、创建人、修改人
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        //设置创建时间、修改时间、创建人、修改人，这里通过AOP自动填充了
         return categoryMapper.insertCategory(category);
     }
 
@@ -81,11 +76,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int modifyCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
-        BeanUtils.copyProperties(categoryDTO,category);
+        BeanUtils.copyProperties(categoryDTO, category);
 
-        //设置修改时间、修改人
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        //设置修改时间、修改人，这里使用AOP的方式自动填充好了
         return categoryMapper.updateCategory(category);
     }
 

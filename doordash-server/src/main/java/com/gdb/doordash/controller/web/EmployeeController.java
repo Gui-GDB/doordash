@@ -1,4 +1,4 @@
-package com.gdb.doordash.controller.admin;
+package com.gdb.doordash.controller.web;
 
 import com.gdb.doordash.constant.JwtClaimsConstant;
 import com.gdb.doordash.dto.EmployeeDTO;
