@@ -7,6 +7,7 @@ import com.aliyun.oss.OSSException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayInputStream;
 
 @Data
@@ -21,10 +22,6 @@ public class AliOssUtil {
 
     /**
      * 文件上传
-     *
-     * @param bytes
-     * @param objectName
-     * @return
      */
     public String upload(byte[] bytes, String objectName) {
 
@@ -61,7 +58,7 @@ public class AliOssUtil {
                 .append("/")
                 .append(objectName);
 
-        log.info("文件上传到:{}", stringBuilder.toString());
+        log.info("文件上传到:{}", stringBuilder);
 
         return stringBuilder.toString();
     }

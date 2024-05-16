@@ -5,3 +5,6 @@ spring:
   config:
     # 导入相关的配置信息
     import: config/knife4jConfig.yml, config/DBConfig.yml, config/jwtConfig.yml, config/logConfig.yml
+  # 激活多环境中的一个环境
+  profiles:
+    active: dev

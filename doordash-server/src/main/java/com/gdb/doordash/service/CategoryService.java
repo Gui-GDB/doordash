@@ -2,7 +2,10 @@ package com.gdb.doordash.service;
 
 import com.gdb.doordash.dto.CategoryDTO;
 import com.gdb.doordash.dto.CategoryPageQueryDTO;
+import com.gdb.doordash.entity.Category;
 import com.gdb.doordash.result.PageResult;
+
+import java.util.List;
 
 public interface CategoryService {
     /**
@@ -29,4 +32,9 @@ public interface CategoryService {
      * 设置分类状态
      */
     int startOrStop(Integer status, Long id);
+
+    /**
+     * 根据类型查询分类
+     */
+    List<Category> list(Integer type);
 }

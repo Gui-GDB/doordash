@@ -2,6 +2,7 @@ package com.gdb.doordash.controller.web;
 
 import com.gdb.doordash.dto.CategoryDTO;
 import com.gdb.doordash.dto.CategoryPageQueryDTO;
+import com.gdb.doordash.entity.Category;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.result.Result;
 import com.gdb.doordash.service.CategoryService;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author: Mr.Gui
@@ -71,5 +74,14 @@ public class CategoryController {
     @Operation(summary = "根据id删除分类")
     public Result<Integer> dropCategory(Long id) {
         return Result.success(categoryService.dropCategory(id));
+    }
+
+    /**
+     * 根据类型查询分类
+     */
+    @GetMapping("/list")
+    @Operation(summary = "根据类型查询分类")
+    public Result<List<Category>> list(Integer type) {
+        return Result.success(categoryService.list(type));
     }
 }

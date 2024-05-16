@@ -42,13 +42,15 @@
         <pagehelper>2.1.0</pagehelper>
         <!--德鲁伊数据库连接池-->
         <druid>1.2.21</druid>
-
-
-        <fastjson>1.2.76</fastjson>
-        <commons.lang>2.6</commons.lang>
-        <aliyun.sdk.oss>3.10.2</aliyun.sdk.oss>
-        <jjwt>0.9.1</jjwt>
+        <!--阿里OSS-->
+        <aliyun.sdk.oss>3.17.2</aliyun.sdk.oss>
+        <!--OSS,使用的是Java 9及以上的版本，则需要添加JAXB相关依赖-->
         <jaxb-api>2.3.1</jaxb-api>
+        <!--fastjson-->
+        <fastjson>1.2.76</fastjson>
+
+        <commons.lang>2.6</commons.lang>
+        <jjwt>0.9.1</jjwt>
         <poi>3.16</poi>
     </properties>
 
@@ -80,8 +82,19 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid}</version>
             </dependency>
-
-
+            <!--阿里OSS-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun.sdk.oss}</version>
+            </dependency>
+            <!--Java9及以上的版本需要添加-->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api}</version>
+            </dependency>
+            <!--fastjson-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
@@ -93,25 +106,11 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${commons.lang}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.aliyun.oss</groupId>
-                <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun.sdk.oss}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb-api}</version>
-            </dependency>
-
             <!-- poi -->
             <dependency>
                 <groupId>org.apache.poi</groupId>

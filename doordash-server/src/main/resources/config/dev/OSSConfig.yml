@@ -1,0 +1,6 @@
+doordash:
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5tBfjHPvfnNbyDs7C7kC
+    access-key-secret: g0Q5aZzbvju6XgGfDjn2tw8ac676qh
+    bucket-name: doordash
