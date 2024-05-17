@@ -22,4 +22,19 @@ public interface DishService {
      * 菜品批量删除
      */
     Integer deleteBatch(List<Long> ids);
+
+    /**
+     * 根据id查询菜品和对应的口味数据
+     */
+    DishVO getByIdWithFlavor(Long id);
+
+    /**
+     * 根据id修改菜品基本信息和对应的口味信息
+     */
+    void updateWithFlavor(DishDTO dishDTO);
+
+    /**
+     * 根据id设置菜品的状态
+     */
+    void startOrStop (Integer type, Long id);
 }

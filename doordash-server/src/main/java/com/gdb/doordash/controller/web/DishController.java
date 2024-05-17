@@ -5,6 +5,7 @@ import com.gdb.doordash.dto.DishPageQueryDTO;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.result.Result;
 import com.gdb.doordash.service.DishService;
+import com.gdb.doordash.vo.DishVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -58,5 +59,38 @@ public class DishController {
     public Result<Integer> delete(@RequestParam List<Long> ids) {
         log.info("菜品批量删除：{}", ids);
         return Result.success(dishService.deleteBatch(ids));
+    }
+
+    /**
+     * 根据id查询菜品
+     */
+    @GetMapping("/{id}")
+    @Operation(summary = "根据id查询菜品")
+    public Result<DishVO> getById(@PathVariable Long id) {
+        log.info("根据id查询菜品：{}", id);
+        DishVO dishVO = dishService.getByIdWithFlavor(id);
+        return Result.success(dishVO);
+    }
+
+    /**
+     * 修改菜品
+     */
+    @PutMapping
+    @Operation(summary = "修改菜品")
+    public Result update(@RequestBody DishDTO dishDTO) {
+        log.info("修改菜品：{}", dishDTO);
+        dishService.updateWithFlavor(dishDTO);
+        return Result.success();
+    }
+
+    /**
+     * 根据 id 启用禁用菜品
+     */
+    @Operation (summary = "启用禁用员菜品")
+    @PostMapping("/status/{status}")
+    public Result<String> startOrStop(@PathVariable Integer status, Long id) {
+        log.info(status + "====> " + id);
+        dishService.startOrStop(status, id);
+        return Result.success();
     }
 }

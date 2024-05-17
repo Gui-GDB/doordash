@@ -95,6 +95,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, employees);
     }
 
+    /**
+     * 根据员工状态启用或禁用员工状态
+     */
     @Override
     public void startOrStop(Integer status, Long id) {
 
