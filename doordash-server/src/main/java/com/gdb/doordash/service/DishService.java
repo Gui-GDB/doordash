@@ -2,6 +2,7 @@ package com.gdb.doordash.service;
 
 import com.gdb.doordash.dto.DishDTO;
 import com.gdb.doordash.dto.DishPageQueryDTO;
+import com.gdb.doordash.entity.Dish;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.vo.DishVO;
 
@@ -37,4 +38,9 @@ public interface DishService {
      * 根据id设置菜品的状态
      */
     void startOrStop (Integer type, Long id);
+
+    /**
+     * 根据分类id查询相关的菜品
+     */
+    List<Dish> dishList(Long categoryId);
 }

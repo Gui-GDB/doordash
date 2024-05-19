@@ -2,6 +2,7 @@ package com.gdb.doordash.controller.web;
 
 import com.gdb.doordash.dto.DishDTO;
 import com.gdb.doordash.dto.DishPageQueryDTO;
+import com.gdb.doordash.entity.Dish;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.result.Result;
 import com.gdb.doordash.service.DishService;
@@ -62,7 +63,7 @@ public class DishController {
     }
 
     /**
-     * 根据id查询菜品
+     * 根据菜品id查询菜品
      */
     @GetMapping("/{id}")
     @Operation(summary = "根据id查询菜品")
@@ -77,20 +78,30 @@ public class DishController {
      */
     @PutMapping
     @Operation(summary = "修改菜品")
-    public Result update(@RequestBody DishDTO dishDTO) {
+    public Result<String> update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品：{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
 
     /**
-     * 根据 id 启用禁用菜品
+     * 根据菜品 id 启用禁用菜品
      */
-    @Operation (summary = "启用禁用员菜品")
+    @Operation(summary = "启用禁用员菜品")
     @PostMapping("/status/{status}")
     public Result<String> startOrStop(@PathVariable Integer status, Long id) {
         log.info(status + "====> " + id);
         dishService.startOrStop(status, id);
         return Result.success();
+    }
+
+    /**
+     * 根据分类 id 查询对应的菜品
+     */
+    @Operation(summary = "根据分类id查询对应的菜品")
+    @GetMapping("/list")
+    public Result<List<Dish>> dishList(Long categoryId) {
+        List<Dish> dishes = dishService.dishList(categoryId);
+        return Result.success(dishes);
     }
 }
