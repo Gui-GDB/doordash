@@ -6,10 +6,13 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: DoorDash
+    - group: web
       paths-to-match: '/**'
       # 生成文档所需的扫包路径，一般为启动类目录
-      packages-to-scan: com.gdb.doordash.controller
+      packages-to-scan: com.gdb.doordash.controller.web
+    - group: user
+      paths-to-match: '/**'
+      packages-to-scan: com.gdb.doordash.controller.user
 #knife4j 增强配置
 knife4j:
   #是否启用增强设置

@@ -1,0 +1,7 @@
+spring:
+  data:
+    redis:
+      host: 59.110.139.253
+      port: 6379
+      password: 123456
+      database: 0

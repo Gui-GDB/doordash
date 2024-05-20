@@ -1,5 +1,8 @@
 spring:
   config:
-    import: config/dev/OSSConfig.yml
+    import:
+      - config/dev/redisConfig.yml
+      - config/dev/DBConfig.yml
+      - config/dev/OSSConfig.yml
     activate:
       on-profile: dev

@@ -7,6 +7,7 @@ import com.gdb.doordash.result.Result;
 import com.gdb.doordash.service.SetmealService;
 import com.gdb.doordash.vo.SetmealVO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
  **/
 
 @RestController
-@RequestMapping("/admin/setmeal")
+@RequestMapping("/web/setmeal")
+@Tag(name = "套餐管理")
 @Slf4j
 public class SetmealController {
     @Resource

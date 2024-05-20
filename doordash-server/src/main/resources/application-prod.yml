@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: config/dev/OSSConfig.yml, config/dev/redisConfig.yml
+    activate:
+      on-profile: prod

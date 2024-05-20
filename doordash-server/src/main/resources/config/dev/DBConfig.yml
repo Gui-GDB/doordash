@@ -6,6 +6,6 @@ spring:
     username: root
     password: GDB20031104!
     type: com.alibaba.druid.pool.DruidDataSource
+# 配置mybatis信息
 mybatis:
   config-location: classpath:config/mybatis-config.xml
-# 配置mybatis信息

@@ -19,7 +19,7 @@ import java.util.UUID;
  * 通用接口
  */
 @RestController
-@RequestMapping("/admin/common")
+@RequestMapping("/web/common")
 @Tag(name = "通用接口")
 @Slf4j
 public class CommonController {

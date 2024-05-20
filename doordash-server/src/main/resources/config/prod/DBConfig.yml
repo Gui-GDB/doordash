@@ -1,0 +1,11 @@
+# 配置数据库连接信息
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/sky_take_out
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: GDB20031104!
+    type: com.alibaba.druid.pool.DruidDataSource
+# 配置mybatis信息
+mybatis:
+  config-location: classpath:config/mybatis-config.xml

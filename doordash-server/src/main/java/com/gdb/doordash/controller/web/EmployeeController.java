@@ -28,7 +28,7 @@ import java.util.Map;
 @Tag(name = "员工相关接口")
 @Slf4j
 @RestController
-@RequestMapping("/admin/employee")
+@RequestMapping("/web/employee")
 public class EmployeeController {
 
     @Resource
