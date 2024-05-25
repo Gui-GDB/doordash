@@ -61,4 +61,10 @@ public interface SetmealMapper {
             "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
             "where sd.setmeal_id = #{setmealId}")
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
+
+    /**
+     * 通过id查询当前分类下是否存在套餐
+     */
+    @Select("select count(*) from setmeal where category_id = #{id}")
+    Integer countByCategoryId(Long id);
 }

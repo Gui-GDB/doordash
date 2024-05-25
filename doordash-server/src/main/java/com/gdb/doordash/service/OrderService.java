@@ -2,6 +2,7 @@ package com.gdb.doordash.service;
 
 import com.gdb.doordash.dto.*;
 import com.gdb.doordash.result.PageResult;
+import com.gdb.doordash.vo.OrderPaymentVO;
 import com.gdb.doordash.vo.OrderStatisticsVO;
 import com.gdb.doordash.vo.OrderSubmitVO;
 import com.gdb.doordash.vo.OrderVO;
@@ -19,6 +20,16 @@ public interface OrderService {
      * 用户下单
      */
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
+
+    /**
+     * 订单支付
+     */
+    OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception;
+
+    /**
+     * 支付成功，修改订单状态
+     */
+    void paySuccess(String outTradeNo);
 
     /**
      * 用户端订单分页查询

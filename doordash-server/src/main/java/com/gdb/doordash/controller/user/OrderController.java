@@ -1,10 +1,12 @@
 package com.gdb.doordash.controller.user;
 
 
+import com.gdb.doordash.dto.OrdersPaymentDTO;
 import com.gdb.doordash.dto.OrdersSubmitDTO;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.result.Result;
 import com.gdb.doordash.service.OrderService;
+import com.gdb.doordash.vo.OrderPaymentVO;
 import com.gdb.doordash.vo.OrderSubmitVO;
 import com.gdb.doordash.vo.OrderVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +36,18 @@ public class OrderController {
         log.info("用户下单：{}", ordersSubmitDTO);
         OrderSubmitVO orderSubmitVO = orderService.submitOrder(ordersSubmitDTO);
         return Result.success(orderSubmitVO);
+    }
+
+    /**
+     * 订单支付
+     */
+    @PutMapping("/payment")
+    @Operation(summary = "订单支付")
+    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+        log.info("订单支付：{}", ordersPaymentDTO);
+        OrderPaymentVO orderPaymentVO = orderService.payment(ordersPaymentDTO);
+        log.info("生成预支付交易单：{}", orderPaymentVO);
+        return Result.success(orderPaymentVO);
     }
 
     /**

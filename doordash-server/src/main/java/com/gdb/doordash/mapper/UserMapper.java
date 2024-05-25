@@ -17,4 +17,10 @@ public interface UserMapper {
      * 插入数据
      */
     void insert(User user);
+
+    /**
+     * 通过主键获取用户信息
+     */
+    @Select("select * from user")
+    User getById(Long userId);
 }

@@ -5,3 +5,10 @@ doordash:
     # 小程序的secret
     secret: c39f783edf6060359fda776a566ef0cf
     mchid: 1677774834
+    # todo 下面的配置都是和微信支付相关的，我这里没有实现，只是模拟实现了而已，到时候根据自己的配置修改即可
+    mchSerialNo: 4B3B3DC35414AD50B1B755BAF8DE9CC7CF407606
+    privateKeyFilePath: D:\apiclient_key.pem
+    apiV3Key: CZBK51236435wxpay435434323FFDuv3
+    weChatPayCertFilePath: D:\wechatpay_166D96F876F45C7D07CE98952A96EC980368ACFC.pem
+    notifyUrl: https://www.weixin.qq.com/wxpay/pay.php
+    refundNotifyUrl: https://www.weixin.qq.com/wxpay/pay.php

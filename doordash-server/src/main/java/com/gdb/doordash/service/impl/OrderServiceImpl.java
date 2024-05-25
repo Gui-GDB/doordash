@@ -13,13 +13,12 @@ import com.gdb.doordash.entity.ShoppingCart;
 import com.gdb.doordash.exception.AddressBookBusinessException;
 import com.gdb.doordash.exception.OrderBusinessException;
 import com.gdb.doordash.exception.ShoppingCartBusinessException;
-import com.gdb.doordash.mapper.AddressBookMapper;
-import com.gdb.doordash.mapper.OrderDetailMapper;
-import com.gdb.doordash.mapper.OrderMapper;
-import com.gdb.doordash.mapper.ShoppingCartMapper;
+import com.gdb.doordash.mapper.*;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.service.OrderService;
 import com.gdb.doordash.utils.HttpClientUtil;
+import com.gdb.doordash.utils.WeChatPayUtil;
+import com.gdb.doordash.vo.OrderPaymentVO;
 import com.gdb.doordash.vo.OrderStatisticsVO;
 import com.gdb.doordash.vo.OrderSubmitVO;
 import com.gdb.doordash.vo.OrderVO;
@@ -54,11 +53,14 @@ public class OrderServiceImpl implements OrderService {
     private ShoppingCartMapper shoppingCartMapper;
     @Resource
     private AddressBookMapper addressBookMapper;
-
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private WeChatPayUtil weChatPayUtil;
     @Value("${doordash.shop.address}")
     private String shopAddress;
 
-    @Value("${sky.baidu.ak}")
+    @Value("${doordash.baidu.ak}")
     private String ak;
 
     /**
@@ -137,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //检查用户的收货地址是否超出配送范围
-        checkOutOfRange(addressBook.getCityName() + addressBook.getDistrictName() + addressBook.getDetail());
+//        checkOutOfRange(addressBook.getCityName() + addressBook.getDistrictName() + addressBook.getDetail());
 
         Long userId = BaseContext.getCurrentId();
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -186,6 +188,58 @@ public class OrderServiceImpl implements OrderService {
                 .orderAmount(order.getAmount())
                 .orderTime(order.getOrderTime())
                 .build();
+    }
+
+    /**
+     * 订单支付
+     */
+    //todo订单支付没有办法做，我直接模拟的正常支付了
+    public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+        paySuccess(ordersPaymentDTO.getOrderNumber());
+        return new OrderPaymentVO();
+    }
+/*    public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception {
+        // 当前登录用户id
+        Long userId = BaseContext.getCurrentId();
+        User user = userMapper.getById(userId);
+
+        //调用微信支付接口，生成预支付交易单
+        JSONObject jsonObject = weChatPayUtil.pay(
+                ordersPaymentDTO.getOrderNumber(), //商户订单号
+                new BigDecimal("0.01"), //支付金额，单位 元
+                "冯四嬢外卖订单", //商品描述
+                user.getOpenid() //微信用户的openid
+        );
+
+        if (jsonObject.getString("code") != null && jsonObject.getString("code").equals("ORDERPAID")) {
+            throw new OrderBusinessException("该订单已支付");
+        }
+
+        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
+        vo.setPackageStr(jsonObject.getString("package"));
+
+        return vo;
+    }*/
+
+    /**
+     * 支付成功，修改订单状态
+     */
+    public void paySuccess(String outTradeNo) {
+        // 当前登录用户id
+        Long userId = BaseContext.getCurrentId();
+
+        // 根据订单号查询当前用户的订单
+        Orders ordersDB = orderMapper.getByNumberAndUserId(outTradeNo, userId);
+
+        // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
+        Orders orders = Orders.builder()
+                .id(ordersDB.getId())
+                .status(Orders.TO_BE_CONFIRMED)
+                .payStatus(Orders.PAID)
+                .checkoutTime(LocalDateTime.now())
+                .build();
+
+        orderMapper.update(orders);
     }
 
 
@@ -248,10 +302,9 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 用户取消订单
      */
-    //todo 这个功能等到把微信支付做了再做
     public void userCancelById(Long id) throws Exception {
         // 根据id查询订单
-/*        Orders ordersDB = orderMapper.getById(id);
+        Orders ordersDB = orderMapper.getById(id);
 
         // 校验订单是否存在
         if (ordersDB == null) {
@@ -269,11 +322,12 @@ public class OrderServiceImpl implements OrderService {
         // 订单处于待接单状态下取消，需要进行退款
         if (ordersDB.getStatus().equals(Orders.TO_BE_CONFIRMED)) {
             //调用微信支付退款接口
-            weChatPayUtil.refund(
+            // todo 这里没有办法真实的退款，所以注释了的，直接模拟的退款成功哈
+/*            weChatPayUtil.refund(
                     ordersDB.getNumber(), //商户订单号
                     ordersDB.getNumber(), //商户退款单号
-                    new BigDecimal(0.01),//退款金额，单位 元
-                    new BigDecimal(0.01));//原订单金额
+                    new BigDecimal("0.01"),//退款金额，单位 元
+                    new BigDecimal("0.01"));//原订单金额*/
 
             //支付状态修改为 退款
             orders.setPayStatus(Orders.REFUND);
@@ -283,7 +337,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setStatus(Orders.CANCELLED);
         orders.setCancelReason("用户取消");
         orders.setCancelTime(LocalDateTime.now());
-        orderMapper.update(orders);*/
+        orderMapper.update(orders);
     }
 
     /**
@@ -401,10 +455,9 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 拒单
      */
-    //todo 这个功能等到把微信支付做了再做
     @Override
     public void rejection(OrdersRejectionDTO ordersRejectionDTO) throws Exception {
-    /*    // 根据id查询订单
+        // 根据id查询订单
         Orders ordersDB = orderMapper.getById(ordersRejectionDTO.getId());
 
         // 订单只有存在且状态为2（待接单）才可以拒单
@@ -413,16 +466,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //支付状态
-        Integer payStatus = ordersDB.getPayStatus();
-        if (payStatus == Orders.PAID) {
+/*        Integer payStatus = ordersDB.getPayStatus();
+        if (Objects.equals(payStatus, Orders.PAID)) {
             //用户已支付，需要退款
+            // todo 这里没有办法真实的退款，所以注释了的，直接模拟的退款成功哈
             String refund = weChatPayUtil.refund(
                     ordersDB.getNumber(),
                     ordersDB.getNumber(),
-                    new BigDecimal(0.01),
-                    new BigDecimal(0.01));
+                    new BigDecimal("0.01"),
+                    new BigDecimal("0.01"));
             log.info("申请退款：{}", refund);
-        }
+        }*/
 
         // 拒单需要退款，根据订单id更新订单状态、拒单原因、取消时间
         Orders orders = new Orders();
@@ -432,29 +486,28 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
 
         orderMapper.update(orders);
-    }*/
     }
 
     /**
      * 取消订单
      */
-    //todo 这个功能等到把微信支付做了再做
     @Override
     public void cancel(OrdersCancelDTO ordersCancelDTO) throws Exception {
-/*        // 根据id查询订单
-        Orders ordersDB = orderMapper.getById(ordersCancelDTO.getId());
+        // 根据id查询订单
+        /*Orders ordersDB = orderMapper.getById(ordersCancelDTO.getId());
 
         //支付状态
         Integer payStatus = ordersDB.getPayStatus();
         if (payStatus == 1) {
             //用户已支付，需要退款
+            // todo 这里没有办法真实的退款，所以注释了的，直接模拟的退款成功哈
             String refund = weChatPayUtil.refund(
                     ordersDB.getNumber(),
                     ordersDB.getNumber(),
-                    new BigDecimal(0.01),
-                    new BigDecimal(0.01));
+                    new BigDecimal("0.01"),
+                    new BigDecimal("0.01"));
             log.info("申请退款：{}", refund);
-        }
+        }*/
 
         // 管理端取消订单需要退款，根据订单id更新订单状态、取消原因、取消时间
         Orders orders = new Orders();
@@ -462,7 +515,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setStatus(Orders.CANCELLED);
         orders.setCancelReason(ordersCancelDTO.getCancelReason());
         orders.setCancelTime(LocalDateTime.now());
-        orderMapper.update(orders);*/
+        orderMapper.update(orders);
     }
 
     /**

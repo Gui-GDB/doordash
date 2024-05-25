@@ -1,11 +1,15 @@
 package com.gdb.doordash.service.impl;
 
+import com.gdb.doordash.constant.MessageConstant;
 import com.gdb.doordash.constant.StatusConstant;
 import com.gdb.doordash.context.BaseContext;
 import com.gdb.doordash.dto.CategoryDTO;
 import com.gdb.doordash.dto.CategoryPageQueryDTO;
 import com.gdb.doordash.entity.Category;
+import com.gdb.doordash.exception.DeletionNotAllowedException;
 import com.gdb.doordash.mapper.CategoryMapper;
+import com.gdb.doordash.mapper.DishMapper;
+import com.gdb.doordash.mapper.SetmealMapper;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.service.CategoryService;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +32,10 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
+    @Resource
+    private DishMapper dishMapper;
+    @Resource
+    private SetmealMapper setmealMapper;
 
     @Override
     public PageResult<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
@@ -56,20 +64,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int dropCategory(Long id) {
-        //todo 这里还没有使用其他的表，后面补
-/*        //查询当前分类是否关联了菜品，如果关联了就抛出业务异常
+        //查询当前分类是否关联了菜品，如果关联了就抛出业务异常
         Integer count = dishMapper.countByCategoryId(id);
-        if(count > 0){
+        if (count > 0) {
             //当前分类下有菜品，不能删除
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
         }
 
         //查询当前分类是否关联了套餐，如果关联了就抛出业务异常
         count = setmealMapper.countByCategoryId(id);
-        if(count > 0){
+        if (count > 0) {
             //当前分类下有菜品，不能删除
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
-        }*/
+        }
         return categoryMapper.deleteCategory(id);
     }
 
