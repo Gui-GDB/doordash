@@ -4,6 +4,7 @@ import com.gdb.doordash.annotation.AutoFill;
 import com.gdb.doordash.dto.SetmealPageQueryDTO;
 import com.gdb.doordash.entity.Setmeal;
 import com.gdb.doordash.enumeration.OperationType;
+import com.gdb.doordash.vo.DishItemVO;
 import com.gdb.doordash.vo.SetmealVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -47,4 +48,17 @@ public interface SetmealMapper {
      */
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    /**
+     * 动态条件查询套餐
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据套餐id查询菜品选项
+     */
+    @Select("select sd.name, sd.copies, d.image, d.description " +
+            "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
+            "where sd.setmeal_id = #{setmealId}")
+    List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 }

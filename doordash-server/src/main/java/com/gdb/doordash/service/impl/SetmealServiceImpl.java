@@ -14,6 +14,7 @@ import com.gdb.doordash.mapper.SetMealDishMapper;
 import com.gdb.doordash.mapper.SetmealMapper;
 import com.gdb.doordash.result.PageResult;
 import com.gdb.doordash.service.SetmealService;
+import com.gdb.doordash.vo.DishItemVO;
 import com.gdb.doordash.vo.SetmealVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -157,5 +158,20 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDish.setSetmealId(setmealId));
         //3、重新插入套餐和菜品的关联关系，操作setmeal_dish表，执行insert
         setMealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     * 条件查询
+     */
+    public List<Setmeal> list(Setmeal setmeal) {
+        List<Setmeal> list = setmealMapper.list(setmeal);
+        return list;
+    }
+
+    /**
+     * 根据id查询菜品选项
+     */
+    public List<DishItemVO> getDishItemById(Long id) {
+        return setmealMapper.getDishItemBySetmealId(id);
     }
 }

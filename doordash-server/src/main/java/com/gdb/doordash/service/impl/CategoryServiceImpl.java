@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
+    public PageResult<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
         //开启分页
         PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
         //执行sql查询语句
@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         //获取总的返回记录条数
         PageInfo<Category> pageInfo = new PageInfo<>(categories);
         long total = pageInfo.getTotal();
-        return new PageResult(total, categories);
+        return new PageResult<>(total, categories);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.gdb.doordash.config;
 
-import com.gdb.doordash.interceptor.JwtTokenAdminInterceptor;
+import com.gdb.doordash.interceptor.JwtTokenUserInterceptor;
+import com.gdb.doordash.interceptor.JwtTokenWebInterceptor;
 import com.gdb.doordash.json.JacksonObjectMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,9 @@ import java.util.List;
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Resource
-    private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private JwtTokenWebInterceptor jwtTokenAdminInterceptor;
+    @Resource
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     /**
      * 注册自定义拦截器
@@ -32,6 +35,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
+
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+                .excludePathPatterns("/user/shop/status");
     }
 
     /**

@@ -11,7 +11,7 @@ public interface CategoryService {
     /**
      * 分页查询
      */
-    PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
+    PageResult<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
     /**
      * 添加分类

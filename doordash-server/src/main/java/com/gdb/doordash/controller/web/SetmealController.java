@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -62,6 +63,7 @@ public class SetmealController {
      */
     @PostMapping("/status/{status}")
     @Operation(summary = "启售或停售套餐")
+    @CacheEvict(cacheNames = "setmealCache", allEntries = true)
     public Result<String> startOrStopSetmeal(@PathVariable("status") Integer status, Long id) {
         setmealService.startOrStopSetmeal(status, id);
         return Result.success();
@@ -82,6 +84,7 @@ public class SetmealController {
      */
     @PutMapping
     @Operation(summary = "修改套餐")
+    @CacheEvict(cacheNames = "setmealCache", allEntries = true)
     public Result<String> update(@RequestBody SetmealDTO setmealDTO) {
         setmealService.update(setmealDTO);
         return Result.success();

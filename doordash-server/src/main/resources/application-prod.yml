@@ -1,5 +1,11 @@
 spring:
   config:
-    import: config/dev/OSSConfig.yml, config/dev/redisConfig.yml
+    import:
+      - config/prod/OSSConfig.yml
+      - config/prod/redisConfig.yml
+      - config/prod/DBConfig.yml
+      - config/prod/jwtConfig.yml
+      - config/prod/wechatConfig.yml
+      - config/prod/location.yml
     activate:
       on-profile: prod

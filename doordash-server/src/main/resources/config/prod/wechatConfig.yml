@@ -1,0 +1,7 @@
+doordash:
+  wechat:
+    # 小程序的appid
+    appid: wx4f07c3a5b480449e
+    # 小程序的secret
+    secret: c39f783edf6060359fda776a566ef0cf
+    mchid: 1677774834

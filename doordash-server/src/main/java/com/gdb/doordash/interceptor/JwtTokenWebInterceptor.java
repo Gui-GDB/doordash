@@ -18,7 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 @Slf4j
 @Component
-public class JwtTokenAdminInterceptor implements HandlerInterceptor {
+public class JwtTokenWebInterceptor implements HandlerInterceptor {
 
     @Resource
     private JwtProperties jwtProperties;

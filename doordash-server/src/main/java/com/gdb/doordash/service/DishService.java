@@ -17,7 +17,7 @@ public interface DishService {
     /**
      * 菜品分页查询
      */
-    PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
+    PageResult<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     /**
      * 菜品批量删除
@@ -43,4 +43,9 @@ public interface DishService {
      * 根据分类id查询相关的菜品
      */
     List<Dish> dishList(Long categoryId);
+
+    /**
+     * 条件查询菜品和口味
+     */
+    List<DishVO> listWithFlavor(Dish dish);
 }

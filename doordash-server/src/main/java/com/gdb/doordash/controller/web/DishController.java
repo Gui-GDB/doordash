@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: Mr.Gui
@@ -30,6 +32,18 @@ public class DishController {
 
     @Resource
     private DishService dishService;
+    @Resource
+    private RedisTemplate<String, List<DishVO>> redisTemplate;
+
+    /**
+     * 清理缓存数据
+     */
+    private void cleanCache() {
+        String REDIS_DATA = "category_*";
+        Set<String> keys = redisTemplate.keys(REDIS_DATA);
+        if (keys != null && keys.size() > 0)
+            redisTemplate.delete(keys);
+    }
 
     /**
      * 新增菜品
@@ -46,9 +60,9 @@ public class DishController {
      */
     @GetMapping("/page")
     @Operation(summary = "菜品分页查询")
-    public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
+    public Result<PageResult<DishVO>> page(DishPageQueryDTO dishPageQueryDTO) {
         log.info("菜品分页查询:{}", dishPageQueryDTO);
-        PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
+        PageResult<DishVO> pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -81,6 +95,8 @@ public class DishController {
     public Result<String> update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品：{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
+        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
+        cleanCache();
         return Result.success();
     }
 
@@ -92,6 +108,8 @@ public class DishController {
     public Result<String> startOrStop(@PathVariable Integer status, Long id) {
         log.info(status + "====> " + id);
         dishService.startOrStop(status, id);
+        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
+        cleanCache();
         return Result.success();
     }
 

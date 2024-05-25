@@ -2,9 +2,13 @@ package com.gdb.doordash.service;
 
 import com.gdb.doordash.dto.SetmealDTO;
 import com.gdb.doordash.dto.SetmealPageQueryDTO;
+import com.gdb.doordash.entity.Setmeal;
 import com.gdb.doordash.result.PageResult;
+import com.gdb.doordash.vo.DishItemVO;
 import com.gdb.doordash.vo.SetmealVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface SetmealService {
@@ -37,4 +41,14 @@ public interface SetmealService {
      * 修改套餐
      */
     void update(SetmealDTO setmealDTO);
+
+    /**
+     * 条件查询
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据id查询菜品选项
+     */
+    List<DishItemVO> getDishItemById(Long id);
 }

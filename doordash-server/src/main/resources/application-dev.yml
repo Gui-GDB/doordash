@@ -4,5 +4,8 @@ spring:
       - config/dev/redisConfig.yml
       - config/dev/DBConfig.yml
       - config/dev/OSSConfig.yml
+      - config/dev/jwtConfig.yml
+      - config/dev/wechatConfig.yml
+      - config/dev/location.yml
     activate:
       on-profile: dev
